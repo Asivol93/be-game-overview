@@ -24,6 +24,33 @@ app.use(express.json());
 app.use('/posts', postsRoute)
 app.use('/users', usersRoute)
 
+const User = mongoose.model("User", UserSchema);
+
+export const authenticateUser = async (req, res, next) => {
+  const accessToken = req.header("Authorization");
+  try {
+    const user = await User.findOne({ accessToken });
+
+    if (user) {
+      req.user = user;
+      next();
+    } else {
+      res.status(401).json({
+        response: {
+          message: "Please, log in",
+        },
+        success: false,
+      });
+    }
+  } catch (error) {
+    res.status(400).json({
+      response: "Oh no, something went wrong!",
+      error: error,
+      success: false,
+    });
+  }
+};
+
 // Start defining your routes here
 app.get('/', (req, res) => {
   res.send(listEndpoints(app))
