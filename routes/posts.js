@@ -1,5 +1,4 @@
 import express from "express";
-import { execMap } from "nodemon/lib/config/defaults";
 const router = express.Router()
 const Post = require('../models/Post')
 
