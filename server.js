@@ -1,5 +1,5 @@
 import express from "express";
-import cors from "cors";
+import bodyParser from 'body-parser'
 import mongoose from 'mongoose'
 import listEndpoints from 'express-list-endpoints'
 
@@ -16,11 +16,13 @@ const app = express();
 
 //Import Routes
 const postsRoute = require('./routes/posts')
+const usersRoute = require('./routes/users')
 
 // Middleware
-app.use(cors());
+app.use(bodyParser.json())
 app.use(express.json());
 app.use('/posts', postsRoute)
+app.use('/users', usersRoute)
 
 // Start defining your routes here
 app.get('/', (req, res) => {
