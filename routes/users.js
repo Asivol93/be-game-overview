@@ -1,9 +1,14 @@
 import express from "express";
-import mongoose from "mongoose";
+import mongoose from 'mongoose'
 import bcrypt from "bcrypt";
 import PasswordValidator from "password-validator";
-const router = express.Router()
-const User = require('../models/User')
+import { PostSchema } from '../models/Post'
+import { UserSchema } from '../models/User'
+
+
+const User = mongoose.model("User", UserSchema);
+const Post = mongoose.model("Post", PostSchema);
+
 
 var passwordSchema = new PasswordValidator()
 
@@ -16,7 +21,7 @@ passwordSchema
 .has().not().spaces()                           // Should not have spaces
 .is().not().oneOf(['Passw0rd', 'Password123']); // Blacklist these values
 
-router.post('/signup', async (req, res) => {
+export const SignUp = async (req, res) => {
     const {
         username,
         password,
@@ -64,29 +69,25 @@ router.post('/signup', async (req, res) => {
             })
         }
     }
-})
+}
 
 
-router.get('/', (req,res) => {
+export const GetAllUsers =  (req,res) => {
     res.send('Users!')
-})
+}
 
-router.get('/userprofile/:id', async (req,res) => {
+export const GetSingleUser = async (req,res) => {
     const { id } = req.params
 
     try {
-        const getSingleUser = await User.findById(id, {username: 1, email: 1})
+        const singleUser = await User.findById(id, {username: 1, email: 1})
         .populate("post")
         if (getSingleUser) {
-            res.status(201).json({ response: getSingleUser, success: true})
+            res.status(201).json({ response: singleUser, success: true})
         } else {
             res.status(404).json({response: "User not found", success: false})
         }
     } catch (error) {
         res.status(400).json({error: error, success: false})
     }
-})
-
-
-
-module.exports = router
+}

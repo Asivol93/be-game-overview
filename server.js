@@ -2,6 +2,10 @@ import express from "express";
 import bodyParser from 'body-parser'
 import mongoose from 'mongoose'
 import listEndpoints from 'express-list-endpoints'
+import { UserSchema } from './models/User'
+import { PostSchema } from './models/Post'
+import {CreatePost, GetAllPosts} from './routes/posts'
+import {GetAllUsers, GetSingleUser, SignUp} from './routes/users'
 
 
 const mongoUrl = process.env.MONGO_URL || 'mongodb://localhost/test'
@@ -14,15 +18,10 @@ mongoose.Promise = Promise
 const port = process.env.PORT || 8080;
 const app = express();
 
-//Import Routes
-const postsRoute = require('./routes/posts')
-const usersRoute = require('./routes/users')
 
 // Middleware
 app.use(bodyParser.json())
 app.use(express.json());
-app.use('/posts', postsRoute)
-app.use('/users', usersRoute)
 
 const User = mongoose.model("User", UserSchema);
 
@@ -55,6 +54,13 @@ export const authenticateUser = async (req, res, next) => {
 app.get('/', (req, res) => {
   res.send(listEndpoints(app))
 })
+
+app.post("/posts", authenticateUser, CreatePost)
+app.get("/posts", GetAllPosts)
+
+app.post('/signup', SignUp)
+app.get('/users', GetAllUsers)
+app.get('/users/userprofile/:id', GetSingleUser)
 
 // Start the server
 app.listen(port, () => {

@@ -6,7 +6,7 @@ const validateEmail = (email) => {
     return re.test(email);
   };
 
-const UserSchema = mongoose.Schema({
+export const UserSchema = mongoose.Schema({
     username: {
         type: String,
         unique: true,
@@ -51,4 +51,3 @@ const UserSchema = mongoose.Schema({
 
 //following and followers
 
-module.exports = mongoose.model('User', UserSchema)
