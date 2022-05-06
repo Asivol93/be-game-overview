@@ -6,7 +6,7 @@ import { UserSchema } from './models/User'
 import { PostSchema } from './models/Post'
 import {CreatePost, GetAllPosts, GetSinglePost, DeletePost} from './routes/posts'
 import {GetAllUsers, GetSingleUser, SignUp, SignIn, EditUser, DeleteUser} from './routes/users'
-
+import { FindGameByQuery } from "./routes/platform";
 
 const mongoUrl = process.env.MONGO_URL || 'mongodb://localhost/test'
 mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -68,6 +68,9 @@ app.get('/users', GetAllUsers)
 app.get('/users/userprofile/:id', GetSingleUser)
 app.patch('/users/userprofile/:id/edit', EditUser)
 app.delete('/users/userprofile/:id/delete', DeleteUser)
+
+//Search query routes
+app.get('/posts/query/', FindGameByQuery)
 
 // Start the server
 app.listen(port, () => {
