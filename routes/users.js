@@ -119,7 +119,7 @@ export const GetSingleUser = async (req,res) => {
     try {
         const singleUser = await User.findById(id, {username: 1, email: 1})
         .populate("post")
-        if (getSingleUser) {
+        if (singleUser) {
             res.status(201).json({ response: singleUser, success: true})
         } else {
             res.status(404).json({response: "User not found", success: false})

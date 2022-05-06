@@ -4,7 +4,7 @@ import mongoose from 'mongoose'
 import listEndpoints from 'express-list-endpoints'
 import { UserSchema } from './models/User'
 import { PostSchema } from './models/Post'
-import {CreatePost, GetAllPosts} from './routes/posts'
+import {CreatePost, GetAllPosts, GetSinglePost} from './routes/posts'
 import {GetAllUsers, GetSingleUser, SignUp, SignIn, EditUser} from './routes/users'
 
 
@@ -57,6 +57,7 @@ app.get('/', (req, res) => {
 
 app.post("/posts/:id", authenticateUser, CreatePost)
 app.get("/posts", GetAllPosts)
+app.get("/posts/:id", GetSinglePost)
 
 app.post('/signup', SignUp)
 app.post('/sigin', SignIn)

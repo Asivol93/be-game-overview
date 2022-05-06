@@ -19,9 +19,28 @@ export const GetAllPosts = async (req,res) => {
     }
 }
 
-// router.get('/specific', (req,res) => {
-//     res.send('Specific post')
-// })
+export const GetSinglePost = async (req, res) => {
+    const {id} = req.params
+
+    try {
+        const singlePost = await Post.findById(id, {}).populate('user')
+        if (singlePost) {
+            res.status(200).json({
+                response: singlePost, success: true,
+            })
+        } else {
+            res.status(404).json({
+                response: "Could not find the review",
+                success: false
+            })
+        }
+    } catch (error) {
+        res.status(400).json({
+            response: error,
+            success: false
+        })
+    }
+}
 
 
 export const CreatePost = async (req, res) => {
