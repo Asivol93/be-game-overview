@@ -70,7 +70,7 @@ app.patch('/users/userprofile/:id/edit', EditUser)
 app.delete('/users/userprofile/:id/delete', DeleteUser)
 
 //Search query routes
-app.get('/posts/query/', FindGameByQuery)
+app.get('/posts/test/:searchParams', FindGameByQuery)
 
 // Start the server
 app.listen(port, () => {

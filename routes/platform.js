@@ -5,20 +5,29 @@ import { PostSchema } from '../models/Post'
 const Post = mongoose.model("Post", PostSchema);
 
 export const FindGameByQuery = async (req, res) => {
-    const { platforms, title, description, genre, console, mobile, contentDelivery } = req.query
+    const { searchParams } = req.params
+
+    const rating = searchParams.rating
+    const genre = searchParams.genre
+
 
     try {
-        const findGameByQuery = await Post.find({
-            platforms: new RegExp(platforms, "i"), 
-            title: new RegExp(title, "i"), 
-            description: new RegExp(description, "i"), 
-            genre: new RegExp(genre, "i"), 
-            console: new RegExp(console, "i"), 
-            mobile: new RegExp(mobile, "i"), 
-            contentDelivery: new RegExp(contentDelivery, "i") 
+        const games = await Post.find({ $or: searchParams.map((param) => {param.rating})
+        //   {rating: rating}, {genre: genre}, {console: searchValue}  
+        
+            
+         
+            // platforms: new RegExp(platforms, "i"), 
+            // title: new RegExp(title, "i"), 
+            // description: new RegExp(description, "i"), 
+            // genre: new RegExp(genre, "i"), 
+            // console: new RegExp(console, "i"), 
+            // mobile: new RegExp(mobile, "i"), 
+            // contentDelivery: new RegExp(contentDelivery, "i") 
         })
+        // return games
         res.status(200).json({
-            response: findGameByQuery,
+            response: games,
             success: true
         })
     } catch (error) {
@@ -28,3 +37,5 @@ export const FindGameByQuery = async (req, res) => {
         })
     }
 }
+
+// , title, description, genre, console, mobile, contentDelivery
