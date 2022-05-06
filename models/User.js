@@ -44,7 +44,7 @@ export const UserSchema = mongoose.Schema({
       post: [
           {
               type: mongoose.Schema.Types.ObjectId,
-              ref: "Posts"
+              ref: "Post"
           }
       ]
 })

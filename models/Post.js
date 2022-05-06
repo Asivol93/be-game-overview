@@ -15,6 +15,11 @@ export const PostSchema = mongoose.Schema({
         maxlength: 800,
         trim: true
     },
+    genre: {
+        type: String,
+        required: true,
+        enum: ["FPS", "RTS", "RPG", "MMORPG", "MOBA", "Stealth", "Fighting", "Survival", "Survival Horror", "Text Games", "Strategy", "Tower Defence", "Simulation", "Party", "Trivia", "Logic and Puzzle", "Board games", "Sport", "Platformer", "Educational", "Exercise"]
+    },
     date: {
         type: Date,
         default: Date.now
@@ -22,7 +27,7 @@ export const PostSchema = mongoose.Schema({
     rating: {
         type: Number,
         required: true,
-        enum: [1,2,3,4,5]
+        enum: [1,2,3,4,5,6,7,8,9,10]
     },
     platforms: {
         type: String,
@@ -47,6 +52,16 @@ export const PostSchema = mongoose.Schema({
     },
     usefull: {
         type: Boolean
+    },
+    community: {
+        type: String,
+        maxlength: 150,
+        minlength: 5,
+        trim: true
+    },
+    communityRating: {
+        type: Number,
+        enum: [1,2,3,4,5,6,7,8,9,10]
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,

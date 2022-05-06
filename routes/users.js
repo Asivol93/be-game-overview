@@ -71,9 +71,46 @@ export const SignUp = async (req, res) => {
     }
 }
 
+export const SignIn = async (req, res) => {
+    try {
+        const {username, password, email, location, currentlyPlaying} = req.body
+        const user = await User.findOne({username})
 
-export const GetAllUsers =  (req,res) => {
-    res.send('Users!')
+        if (user && bcrypt.compareSync(password, user.password)) {
+            res.status(200).json({
+                repsonse: {
+                    id: user._id,
+                    username: user.username,
+                    email: user.email,
+                    location: user.location,
+                    currentlyPlaying: user.currentlyPlaying
+                },
+                success: true
+            })
+        } else {
+            res.status(404).json({
+                response: "Username or password is incorrect, try again!",
+                error: error,
+                success: false
+            })
+        }
+    } catch (error) {
+        res.status(400).json({
+            response: "Something went wrong!",
+            success: false
+        })
+    }  
+}
+
+
+export const GetAllUsers = async (req,res) => {
+    try {
+        const allUsers = await User.find({})
+        .populate("post")
+        res.status(201).json({response: allUsers, success: true})
+    } catch (error) {
+        res.status(400).json({error: "No users found!", success: false})
+    }
 }
 
 export const GetSingleUser = async (req,res) => {
@@ -89,5 +126,33 @@ export const GetSingleUser = async (req,res) => {
         }
     } catch (error) {
         res.status(400).json({error: error, success: false})
+    }
+}
+
+
+export const EditUser = async (req,res) => {
+    const updatedUserInfo = req.body
+    const { id } = req.params
+
+    try {
+        const updatedUser = await User.findByIdAndUpdate(id,
+            { $set: updatedUserInfo},
+            {new: true})
+            if (updatedUser) {
+                res.status(200).json({
+                    response: updatedUser,
+                    success: true
+                })
+            } else {
+                res.status(400).json({
+                    response: "User not found",
+                    success: false
+                })
+            }
+    } catch (error) {
+        res.status(400).json({
+            response: error,
+            success: false
+        })
     }
 }

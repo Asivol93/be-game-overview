@@ -5,7 +5,7 @@ import listEndpoints from 'express-list-endpoints'
 import { UserSchema } from './models/User'
 import { PostSchema } from './models/Post'
 import {CreatePost, GetAllPosts} from './routes/posts'
-import {GetAllUsers, GetSingleUser, SignUp} from './routes/users'
+import {GetAllUsers, GetSingleUser, SignUp, SignIn, EditUser} from './routes/users'
 
 
 const mongoUrl = process.env.MONGO_URL || 'mongodb://localhost/test'
@@ -55,12 +55,14 @@ app.get('/', (req, res) => {
   res.send(listEndpoints(app))
 })
 
-app.post("/posts", authenticateUser, CreatePost)
+app.post("/posts/:id", authenticateUser, CreatePost)
 app.get("/posts", GetAllPosts)
 
 app.post('/signup', SignUp)
+app.post('/sigin', SignIn)
 app.get('/users', GetAllUsers)
 app.get('/users/userprofile/:id', GetSingleUser)
+app.patch('/users/userprofile/:id/edit', EditUser)
 
 // Start the server
 app.listen(port, () => {

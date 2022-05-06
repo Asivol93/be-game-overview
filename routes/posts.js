@@ -28,7 +28,8 @@ export const CreatePost = async (req, res) => {
     const { id } = req.params
     const {
         title,
-        description, 
+        description,
+        genre, 
         rating,
         date,
         platforms,
@@ -37,12 +38,15 @@ export const CreatePost = async (req, res) => {
         contentDelivery,
         visible,
         usefull,
+        community,
+        communityRating,
     } = req.body
 
     try {
         const newPost = await new Post({
             title,
             description,
+            genre,
             rating,
             date,
             platforms,
@@ -51,10 +55,12 @@ export const CreatePost = async (req, res) => {
             contentDelivery,
             visible,
             usefull,
+            community,
+            communityRating
         }).save()
-        // const updateUserWithPost = await User.findByIdAndUpdate(id, {
-        //     $push: {post: newPost}
-        // })
+        const updateUserWithPost = await User.findByIdAndUpdate(id, {
+            $push: {post: newPost}
+        })
         res.status(201).json({response: newPost, success: true})
     } catch (error) {
         res.status(400).json({response: error, success: false})
