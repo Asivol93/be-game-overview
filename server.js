@@ -4,8 +4,8 @@ import mongoose from 'mongoose'
 import listEndpoints from 'express-list-endpoints'
 import { UserSchema } from './models/User'
 import { PostSchema } from './models/Post'
-import {CreatePost, GetAllPosts, GetSinglePost} from './routes/posts'
-import {GetAllUsers, GetSingleUser, SignUp, SignIn, EditUser} from './routes/users'
+import {CreatePost, GetAllPosts, GetSinglePost, DeletePost} from './routes/posts'
+import {GetAllUsers, GetSingleUser, SignUp, SignIn, EditUser, DeleteUser} from './routes/users'
 
 
 const mongoUrl = process.env.MONGO_URL || 'mongodb://localhost/test'
@@ -50,20 +50,24 @@ export const authenticateUser = async (req, res, next) => {
   }
 };
 
-// Start defining your routes here
+//list all routes
 app.get('/', (req, res) => {
   res.send(listEndpoints(app))
 })
 
+//Post routes
 app.post("/posts/:id", authenticateUser, CreatePost)
 app.get("/posts", GetAllPosts)
 app.get("/posts/:id", GetSinglePost)
+app.delete('/posts/:id/delete', DeletePost)
 
+//User routes
 app.post('/signup', SignUp)
 app.post('/sigin', SignIn)
 app.get('/users', GetAllUsers)
 app.get('/users/userprofile/:id', GetSingleUser)
 app.patch('/users/userprofile/:id/edit', EditUser)
+app.delete('/users/userprofile/:id/delete', DeleteUser)
 
 // Start the server
 app.listen(port, () => {

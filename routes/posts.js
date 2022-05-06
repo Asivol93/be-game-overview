@@ -87,3 +87,20 @@ export const CreatePost = async (req, res) => {
 
 }
 
+export const DeletePost = async (req, res) => {
+    const {id} = req.params
+
+    try {
+        const deletePost = await Post.findByIdAndDelete(id)
+        res.status(200).json({
+            repsonse: deletePost,
+            success: true
+        })
+    } catch (error) {
+        res.status(400).json({
+            response: error,
+            success: false
+        })
+    }
+}
+
