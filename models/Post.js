@@ -44,14 +44,15 @@ export const PostSchema = mongoose.Schema({
     }],
     contentDelivery: {
         type: String,
-        enum: ["Steam", "Origin", "Battle.net", "Uplay", "GOG", "Roblox", "Epic Games", "PlayStation Network", "PlayStation Store", "Microsoft Store", "Nintendo eShop", "Amazon Appstore", "Samsung Galaxy Store", "Huawei AppGallery", "Google Play Store", "Apple App Store", "Metaboli", "Ubisoft Connect", "GameHouse", "Game Jolt", "Green Man Gaming", "GamersGate", "Amazon Prime Gaming", "Amazon App Store", "Humble Store", "itchi.io", "Mac Desktop Store"     ]
+        enum: ["Steam", "Origin", "Battle.net", "Uplay", "GOG", "Roblox", "Epic Games", "PlayStation Network", "PlayStation Store", "Microsoft Store", "Nintendo eShop", "Amazon Appstore", "Samsung Galaxy Store", "Huawei AppGallery", "Google Play Store", "Apple App Store", "Metaboli", "Ubisoft Connect", "GameHouse", "Game Jolt", "Green Man Gaming", "GamersGate", "Amazon Prime Gaming", "Amazon App Store", "Humble Store", "itchi.io", "Mac Desktop Store", "Riot Games"     ]
     },
     visible: {
         type: Boolean,
         required: true,
     },
     usefull: {
-        type: Boolean
+        type: Number,
+        default: 0
     },
     community: {
         type: String,

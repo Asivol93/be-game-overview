@@ -104,3 +104,59 @@ export const DeletePost = async (req, res) => {
     }
 }
 
+export const UpVoteUsefullScore = async (req, res) => {
+    const {postId} = req.params
+
+   try {
+       const upVoteUsefullScore = await Post.findByIdAndUpdate(
+           postId,
+           {
+               $inc: {
+                   usefull: 1,
+               }
+           },
+           {
+                new: true,
+           }
+       )
+       res.status(200).json({
+           response: upVoteUsefullScore,
+           success: true
+       })
+
+   } catch (error) {
+       res.status(400).json({
+           response: error,
+           success: false
+       })
+   }
+}
+
+export const DownVoteUsefullScore = async (req, res) => {
+    const {postId} = req.params
+
+   try {
+       const downVoteUsefullScore = await Post.findByIdAndUpdate(
+           postId,
+           {
+               $inc: {
+                   usefull: -1,
+               }
+           },
+           {
+                new: true,
+           }
+       )
+       res.status(200).json({
+           response: downVoteUsefullScore,
+           success: true
+       })
+
+   } catch (error) {
+       res.status(400).json({
+           response: error,
+           success: false
+       })
+   }
+}
+

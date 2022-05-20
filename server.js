@@ -4,9 +4,9 @@ import mongoose from 'mongoose'
 import listEndpoints from 'express-list-endpoints'
 import { UserSchema } from './models/User'
 import { PostSchema } from './models/Post'
-import {CreatePost, GetAllPosts, GetSinglePost, DeletePost} from './routes/posts'
+import {CreatePost, GetAllPosts, GetSinglePost, DeletePost, UpVoteUsefullScore, DownVoteUsefullScore} from './routes/posts'
 import {GetAllUsers, GetSingleUser, SignUp, SignIn, EditUser, DeleteUser} from './routes/users'
-import { FindGameByQuery } from "./routes/platform";
+import { FindGameByGenre, FindGameByRating, FindGameByPlatform, FindGameByContentDelivery } from "./routes/params";
 
 const mongoUrl = process.env.MONGO_URL || 'mongodb://localhost/test'
 mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -60,6 +60,8 @@ app.post("/posts/:id", authenticateUser, CreatePost)
 app.get("/posts", GetAllPosts)
 app.get("/posts/:id", GetSinglePost)
 app.delete('/posts/:id/delete', DeletePost)
+app.post('/posts/:postId/upvote', UpVoteUsefullScore)
+app.post('/posts/:postId/downvote', DownVoteUsefullScore)
 
 //User routes
 app.post('/signup', SignUp)
@@ -69,8 +71,11 @@ app.get('/users/userprofile/:id', GetSingleUser)
 app.patch('/users/userprofile/:id/edit', EditUser)
 app.delete('/users/userprofile/:id/delete', DeleteUser)
 
-//Search query routes
-app.get('/posts/test/:searchParams', FindGameByQuery)
+//Search param routes
+app.get('/posts/genres/:genre', FindGameByGenre)
+app.get('/posts/ratings/:rating', FindGameByRating)
+app.get('/posts/platforms/:platforms', FindGameByPlatform)
+app.get('/posts/content/:contentDelivery', FindGameByContentDelivery)
 
 // Start the server
 app.listen(port, () => {
