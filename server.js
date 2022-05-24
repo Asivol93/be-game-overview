@@ -5,7 +5,7 @@ import listEndpoints from 'express-list-endpoints'
 import { UserSchema } from './models/User'
 import { PostSchema } from './models/Post'
 import {CreatePost, GetAllPosts, GetSinglePost, DeletePost, UpVoteUsefullScore, DownVoteUsefullScore} from './routes/posts'
-import {GetAllUsers, GetSingleUser, SignUp, SignIn, EditUser, DeleteUser} from './routes/users'
+import {GetAllUsers, GetSingleUser, SignUp, SignIn, EditUser, DeleteUser, NewUserFollowed, NewUserUnFollowed} from './routes/users'
 import { FindGameByGenre, FindGameByRating, FindGameByPlatform, FindGameByContentDelivery } from "./routes/params";
 
 const mongoUrl = process.env.MONGO_URL || 'mongodb://localhost/test'
@@ -63,6 +63,7 @@ app.delete('/posts/:id/delete', DeletePost)
 app.post('/posts/:postId/upvote', UpVoteUsefullScore)
 app.post('/posts/:postId/downvote', DownVoteUsefullScore)
 
+
 //User routes
 app.post('/signup', SignUp)
 app.post('/sigin', SignIn)
@@ -70,6 +71,8 @@ app.get('/users', GetAllUsers)
 app.get('/users/userprofile/:id', GetSingleUser)
 app.patch('/users/userprofile/:id/edit', EditUser)
 app.delete('/users/userprofile/:id/delete', DeleteUser)
+app.post('/users/:userId/follow/:myId', NewUserFollowed)
+app.post('/users/:userId/unfollow/:myId', NewUserUnFollowed)
 
 //Search param routes
 app.get('/posts/genres/:genre', FindGameByGenre)

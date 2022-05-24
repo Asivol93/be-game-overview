@@ -173,3 +173,77 @@ export const DeleteUser = async (req, res) => {
         })
     }
 }
+
+export const NewUserFollowed = async (req, res) => {
+    const { userId, myId } = req.params
+
+    try {
+        const newUserToFollow = await User.findById(userId, {
+            username
+        }).populate('user')
+
+        if (newUserToFollow) {
+            const clickedFollow = await User.findByIdAndUpdate(
+                myId,
+                {
+                    $push: {following: newUserToFollow},
+                },
+                {
+                    new: true,
+                }
+                ) 
+                res.status(201).json({
+                    response: clickedFollow,
+                    success: true
+                })
+        } else {
+            res.status(404).json({
+                response: "Something went wrong..",
+                success: false
+            })
+        }
+
+    } catch (error) {
+        res.status(400).json({
+            response: error,
+            success: false
+        })
+
+    }
+}
+
+export const NewUserUnFollowed = async (req, res) => {
+    const { userId, myId } = req.params
+
+    try {
+        const newUserToUnFollow = await User.findById(userId)
+
+        if (newUserToUnFollow) {
+            const clickedUnFollow = await User.findByIdAndUpdate(
+                myId,
+                {
+                    $pullAll: {following: [newUserToUnFollow]},
+                },
+                {
+                    new: true,
+                }
+                ) 
+                res.status(201).json({
+                    response: clickedUnFollow,
+                    success: true
+                })
+        } else {
+            res.status(404).json({
+                response: "Something went wrong..",
+                success: false
+            })
+        }
+
+    } catch (error) {
+        res.status(400).json({
+            response: error,
+            success: false
+        })
+
+    }
+}
